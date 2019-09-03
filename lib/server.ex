@@ -25,15 +25,40 @@ end
  #   {:noreply, :queue.in(item, queue)}
 #end
 
-def checkvampire(pid, item) do
+def checkvampire(pid, item1, item2) do
 
-    GenServer.call(pid, {:checkvampire, item} )
+    GenServer.call(pid, {:checkvampire, item1, item2} )
 end
 
-def handle_call({:checkvampire, item}, _from,item) do
+def handle_call({:checkvampire, item1, item2}, _from,item) do
+    totalConcurrentTasks = 8
+
+    numbers = Enum.to_list(item1..item2)
+
+    Enum.chunk_every(numbers, totalConcurrentTasks) 
+    |> Enum.map(fn(numberList) -> Task.async(fn -> vampires(numberList) end) end)
+
+
+    {:reply, item+1,item+1}
+end
+
+defp vampires (numberList) do
+
+
+    Enum.each(numberList, fn x -> 
+    case checkVampire1(x) do
+    [] -> {:ok}
+    result -> 
+    msg = "#{x}"
+   # IO.write x
+    #Enum.each(result , fn {a,b} -> IO.write  " #{a} " <> "#{b}"  end ) 
+     IO.puts Enum.reduce(result , msg,fn ({a,b}  , msg) -> msg <> " #{a} " <> "#{b}"   end ) 
     
-    {:reply, checkVampire1(item), item+1}
+
+    end end )
+
 end
+
 
 defp factors(number) do
         noOfDigitis = length(Integer.digits(number))
@@ -44,6 +69,8 @@ defp factors(number) do
             for i <- (start..last), rem(number,i) == 0, do: {i,div(number,i)}
          
 end
+
+
 
 defp checkVampire1(number) do
         noOfDigitis = length(Integer.digits(number))
@@ -65,7 +92,9 @@ end
 
 end
 
-numbers = Enum.to_list(16758243290880..24959017348650)
+
+number1 = 1000
+number2 = 2000000
 {:ok, pid} = Vampire.Server.start_link(16758243290880)
 
 #Vampire.Server.add(pid, "item-1")
@@ -75,12 +104,9 @@ numbers = Enum.to_list(16758243290880..24959017348650)
 # = 1260
 #IO.write numbers
 
-Enum.each(numbers, fn x -> 
-case Vampire.Server.checkvampire(pid,x) do
-[] -> {:ok}
-result -> 
-IO.write x
-Enum.each(result , fn {a,b} -> IO.write  " #{a} " <> "#{b}"  end ) 
-IO.puts ""
+#{ok, Tracer} = fprof: profile(start),
+#fprof: trace([start, {tracer, Tracer}]),
+Vampire.Server.checkvampire(pid,number1, number2)
 
- end end)
+#fprof: trace(stop);
+
