@@ -24,7 +24,7 @@ step2:run the command ($mix run proj1.exs 100000 200000) to execute the file. Yo
 
 2. Number of worker actor is 1200
 3. Size of work unit of each worker is equally distributed. Example: input size is 1 million. So, Size of each work unit=1000000/1200.      So, Each worker will execute 833 vampire numbers.
-4. result of $ mix run proj1.exs 100000 200000
+4. result of $ mix run proj1.exs 100000 200000 <br/>
     102510 201 510
     104260 260 401
     105210 210 501
@@ -81,7 +81,7 @@ step2:run the command ($mix run proj1.exs 100000 200000) to execute the file. Yo
     192150 210 915
     193257 327 591
     193945 395 491
-    197725 275 719
+    197725 275 719 <br />
 5. CPU time: 2.732 second
    real time: .959 second
    ratio: 2.85
