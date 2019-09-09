@@ -66,35 +66,26 @@ step2:run the command ($mix run proj1.exs 100000 200000) to execute the file. Yo
     156240 240 651 <br />
     156289 269 581 <br />
     156915 165 951 <br />
-    162976 176 926
-    163944 396 414
-    172822 221 782
-    173250 231 750
-    174370 371 470
-    175329 231 759
-    180225 225 801
-    180297 201 897
-    182250 225 810
-    182650 281 650
-    186624 216 864
-    190260 210 906
-    192150 210 915
-    193257 327 591
-    193945 395 491
+    162976 176 926 <br />
+    163944 396 414 <br />
+    172822 221 782 <br />
+    173250 231 750 <br />
+    174370 371 470 <br />
+    175329 231 759 <br />
+    180225 225 801 <br />
+    180297 201 897 <br />
+    182250 225 810 <br />
+    182650 281 650 <br />
+    186624 216 864 <br />
+    190260 210 906 <br />
+    192150 210 915 <br />
+    193257 327 591 <br />
+    193945 395 491 <br />
     197725 275 719 <br />
-5. CPU time: 2.732 second
-   real time: .959 second
-   ratio: 2.85
+5. CPU time: 2.732 second <br />
+   real time: .959 second <br />
+   ratio: 2.85 <br />
 6. mix run proj1.exs 10000000 20000000 (10 million to 20 million TESTED)
-7.
-
-```elixir
-def deps do
-  [
-    {:app1, "~> 0.1.0"}
-  ]
-end
-```
 
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
