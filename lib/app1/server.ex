@@ -3,7 +3,8 @@ use GenServer
 #Code.require_file("Vam.ex")
 
 def start_link(state \\[]) do
-    GenServer.start_link(__MODULE__, state , name:  __MODULE__)
+   # GenServer.start_link(__MODULE__, state , name:  __MODULE__)
+   GenServer.start_link(__MODULE__, state , name:  __MODULE__)
 end
 
 
@@ -22,12 +23,20 @@ def get() do
   
     GenServer.call(__MODULE__, :get, 100000000)
 end
+def set() do  
+  
+  GenServer.call(__MODULE__, :set, 100000000)
+end
 
 def handle_call(:get, _from, state) do
   
   {:reply,state, state , 100000}
 end
 
+def handle_call(:set, _from, state) do
+  
+  {:reply,state, [] , 100000}
+end
 
 
 #def handle_cast({:add, item}, queue) do
@@ -60,7 +69,7 @@ defp buildresult(numbers , totalConcurrentTasks) do
   Enum.chunk_every(numbers, totalConcurrentTasks) 
   #|> Enum.map(fn(numberList) ->  vampires(numberList)  end)
   |> Enum.map(fn(numberList) -> Task.async(fn -> vampires(numberList) end) end)
-  |>Enum.map(fn(task) -> Task.await(task) end)
+  |>Enum.map(fn(task) -> Task.await(task,:infinity) end)
  #|> Enum.map(fn(numberList) ->   vampires(numberList)  end)
   |>Enum.filter( fn(x) -> x != [] end)
  
@@ -68,20 +77,20 @@ defp buildresult(numbers , totalConcurrentTasks) do
 end
 
 
- # handle_info/2 receives generic messages from the Task processes
-  #def handle_info({_task, {:ok, result}}, state) do
+  #handle_info/2 receives generic messages from the Task processes
+  def handle_info({_task, {:ok, _result}}, state) do
    # IO.puts("#{inspect(result)} Job Done.")
-    #{:noreply, state}
-  #end
+    {:noreply, state}
+  end
 
 # Once the task finised successfully, it exits normally.
 # This handle_info function responds to this message.
-#def handle_info({:EXIT, _pid, :normal}, state) do
+def handle_info(_, state) do
    # Do some book keeping
  #  IO.puts("The task exited and finished normally")
 
-  # {:noreply, state} 
-#end
+   {:noreply, state} 
+end
 
 # Finally, when the task, the caller receives a DOWN message.
 # In this case the caller was the GenServer.
@@ -89,8 +98,7 @@ end
   # Do some book keeping one the task goes down
 #  IO.puts(state.msg)
 
- # {:noreply, state}
-#end
+ ##end
 
 defp vampires (numberList) do
   
